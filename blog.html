@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>interpret ai: Blog</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Copy the styles from the main page */
+    body {
+      font-family: 'Lucida Console', monospace;
+      font-size: 18px;
+      color: #111;
+      background-color: white;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 50px;
+      box-sizing: border-box;
+    }
+    .links-container { font-size: 24px; margin: 20px; }
+    .links-container a { text-decoration: none; margin: 0 10px; color: inherit; }
+    .separator { letter-spacing: -9px; }
+    .blog-post { margin-bottom: 40px; }
+    .blog-post h2 { margin-bottom: 10px; }
+    .blog-post .date { font-style: italic; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="links-container">
+    <a href="updated-website-structure.html">Home</a><span class="separator">|</span>
+    <a href="products.html">Products</a><span class="separator">|</span>
+    <a href="blog.html">Blog</a>
+  </div>
+
+  <h1>interpret ai Blog</h1>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+      });
+  </script>
+  <div class="blog-post">
+    <h2>Scaling laws for autoencoders</h2>
+    <p class="date">August 11, 2024</p>
+    
+    
+    <p>Recently, I tried training an extensive autoencoder for financial data -like model—more accurately described as a large encoder with predictive capabilities for subsequent ticks in lieu of a decoder—to ascertain the degree of data compression attainable. The selection of latent space dimensionality presented a challenge, prompting me to experiment with various configurations. Upon graphing the logarithm of the loss function against the logarithm of dimensionality, I observed an approximately linear relationship.</p>
+
+    <p>This intriguing discovery led me to hypothesize that similar behavior might be observed in conventional autoencoders, particularly when constraints on encoder and decoder sizes are relaxed. Subsequent experimentation confirmed this linearity, even in variational autoencoders (VAEs), initially without added noise. This finding suggests a potential scaling law, which is particularly noteworthy given the prevailing notion that structured data resides on low-dimensional manifolds, aligning with the concept that "compression equals intelligence."</p>
+
+    <p>The manifold hypothesis <span class="citation">(https://en.wikipedia.org/wiki/Manifold_hypothesis)</span> is widely acknowledged in the field. However, the aforementioned observations appear to contradict this hypothesis. If valid, we would expect the decoder to parametrize a portion of the manifold using the latent space. Consequently, if the dataset's image occupies a full-dimensional subset of the latent space, one would anticipate a discontinuity in the loss function upon reaching the manifold's dimensionality. Alternatively, the loss curve might resemble the cumulative variance explained by the first $n$ components of the data, or at least the cumulative variance explained by the first $n$ components in the latent space. This observation presents a compelling argument against the manifold hypothesis and underscores the discrete structure inherent in the phenomena under study.</p>
+
+    <p>A second, and perhaps more significant, consideration is the underlying reason for the linearity observed in the log-log plot. This phenomenon has been independently verified, as evidenced in the second figure of <span class="citation">https://arxiv.org/pdf/2406.04093</span>. Notably, the authors of this study do not strive for large encoders and decoders; rather, they impose bottlenecks in model size. Despite this constraint, the linearity remains apparent.</p>
+
+    <p>To elucidate this phenomenon, a colleague astutely noted: "If you consider a matrix SVD and examine the error, it would approximate the sum of the lowest singular values. Thus, if $e \sim d\sigma_d$, then $\log(e) \sim \log(d) + \log(\sigma_d)$, potentially explaining the behavior when compressing to a lower dimension." Upon further reflection, I realized that for unstructured data, significant compression is inherently challenging, as a small latent space is insufficient. This led to a contemplation of the nature of structure, which can be conceptualized as features.</p>
+
+    <p>The question then arises: what constitutes features, and how many can be accommodated in a latent space? For a decoder to distinguish features, a minimum angular separation ($\epsilon$) between different features is necessary. A well-known theorem states that the maximum number of distinct vectors that can be embedded in an $n$-dimensional space, while maintaining a minimum pairwise angular separation of $\epsilon$, grows exponentially. This realization provides a satisfactory explanation for the observed phenomenon.</p>
+</body>
+    
+  </div>
+
+  <div class="blog-post">
+    <h2>Landawer conatant and Bremerman limit and its reflections about measure of intelligence</h2>
+    <p class="date">August 5, 2024</p>
+
+        <title>On the Feasibility of AI Models Winning Gold Medals in International Mathematics Olympiads by 2026</title>
+ 
+        <h1>On the Feasibility of AI Models Winning Gold Medals in International Mathematics Olympiads by 2026</h1>
+    
+        <p>I recently posited a hypothesis, backed by a substantial wager of 2000 USD, that no machine learning models would be capable of securing a gold medal at the International Mathematical Olympiad (IMO) until 2026. Upon further reflection, I believe my initial assessment may have been overly conservative. However, the reasoning behind this hypothesis merits closer examination.</p>
+    
+        <h2>Quantifying Model Intelligence</h2>
+    
+        <p>One of the persistent challenges in artificial intelligence research has been establishing a reliable metric for model intelligence. I propose that a reasonable proxy for this metric could be the energy expenditure during the training process. However, this approach necessitates several important considerations:</p>
+    
+        <ol>
+            <li><strong>Stability of Training Frameworks:</strong> This hypothesis assumes relative stability in model training frameworks until 2026. Specifically, it presupposes that models will continue to be predominantly based on transformer architectures, supplemented by reinforcement learning and tree-search algorithms, with algorithmic efficiency remaining within the same order of magnitude as current techniques.</li>
+    
+            <li><strong>Landauer's Principle:</strong> This assumption is grounded in Landauer's principle, which stipulates the minimum amount of energy required to erase one bit of information. Remarkably, modern computers operate within 100-1000 times of this theoretical limit. Given this proximity to the physical limit, it becomes reasonable to gauge model intelligence by quantifying the floating-point operations (FLOPs) required for training.</li>
+    
+            <li><strong>Current Benchmarks:</strong> As a point of reference, GPT-4 is estimated to require approximately 20 petaFLOPs for training, which serves as a reasonable approximation for current state-of-the-art models.</li>
+        </ol>
+    
+        <h2>Scaling Laws and Computational Requirements</h2>
+    
+        <p>The relationship between model capabilities and computational requirements appears to follow certain scaling laws:</p>
+    
+        <ol>
+            <li><strong>Exponential Compute for Linear Capability Growth:</strong> There is a growing body of empirical evidence suggesting that linear growth in capabilities necessitates exponential increases in computational resources. This intuition aligns with power laws observed in various physical phenomena and is generally supported by empirical scaling laws in machine learning.</li>
+    
+            <li><strong>Defining Capabilities:</strong> While the precise definition of "capabilities" remains somewhat ambiguous in this context, we can accept this intuition as a working hypothesis for the purposes of this discussion.</li>
+    
+            <li><strong>Extrapolation to IMO Performance:</strong> If we assume that a linear increase in the number of IMO problems solved requires exponential growth in computational resources, and we extrapolate this relationship based on existing models, we arrive at a computational requirement that exceeds the capacity of currently available data centers globally.</li>
+        </ol>
+    
+        <h2>Energy as the Limiting Factor</h2>
+    
+        <p>This analysis leads to a critical observation: the primary bottleneck in scaling these models is energy consumption. The difficulty in significantly expanding model capabilities stems largely from the enormous energy requirements associated with training increasingly complex models.</p>
+    
+        <h2>Bremermann's Limit</h2>
+    
+        <p>To further contextualize this energy constraint, it's important to consider Bremermann's limit. Named after Hans-Joachim Bremermann, this theoretical limit posits a maximum computational speed for a self-contained system with finite mass. Derived from quantum mechanics and Einstein's mass-energy equivalence, Bremermann's limit is approximately 1.36 × 10^50 bits per second per kilogram.</p>
+    
+        <p>For a hypothetical computer with the mass of Earth (approximately 5.97 × 10^24 kg), this translates to a maximum computational speed of about 8.13 × 10^74 bits per second. While this limit is enormously high compared to current computing capabilities, it underscores the fundamental physical constraints on computation, regardless of future technological advancements.</p>
+    
+        <p>The Bremermann's limit serves as an ultimate ceiling on computational speed, reinforcing the argument that energy constraints pose a significant challenge to indefinite scaling of AI models. As we approach this limit, the energy requirements for marginal improvements in AI performance will become increasingly prohibitive.</p>
+    
+        <h2>Conclusion</h2>
+    
+        <p>While my initial bet may prove to be overly pessimistic, the underlying reasoning highlights a critical aspect of AI development that warrants further discussion. The challenges associated with scaling models are substantial, primarily due to energy constraints. As we continue to push the boundaries of AI capabilities, it becomes increasingly important to consider these physical limitations and their implications for the future of artificial intelligence research and development.</p>
+    
+  </div>
+
+
+
+  <div style="background: hsl(40, 35%, 96%); padding: 10px; margin: 20px 0; border-top: 1px solid hsl(40, 35%, 90%); border-bottom: 1px solid hsl(40, 35%, 90%);">
+    <canvas id="scatterPlot"></canvas>
+  </div>
+
+  <footer>
+    <p>Visualisation of feature clustering inside latent space of our model(we are all beings of pure entropy inside some giant model).</p>
+  </footer>
+
+  <script>
+    const data = {
+      datasets: [{
+        label: 'Features',
+        data: [
+          {"x": 0.10307536521984116, "y": 0.08145113580797413},
+          {"x": 0.13380331479156143, "y": -0.03943577810068692},
+          {"x": 0.13436263735925735, "y": -0.22555386613737202},
+          {"x": 0.02845184490174445, "y": -0.1772734912501808},
+          {"x": 0.02454413725731024, "y": -0.2384917648204287},
+          {"x": 0.055251356660511154, "y": -0.005593567230692623},
+          {"x": -0.8417723360328951, "y": -0.19176271278978535},
+          {"x": 0.20854816138673313, "y": -0.19459552687646847},
+          {"x": 0.08692878462562177, "y": -0.14799390601338883},
+          {"x": 0.3032964774540071, "y": 0.17822991943570343},
+          {"x": 0.19089368619900002, "y": 0.03320334866902686},
+          {"x": -0.30983674216061297, "y": 0.7962611058710448},
+          {"x": -0.026992223212060996, "y": -0.11576355061737974},
+          {"x": 0.020274699342541027, "y": 0.876962459638845},
+          {"x": -0.5599270769535953, "y": 0.6317593219548892},
+          {"x": 0.08840488149727117, "y": -0.09046940449711664},
+          {"x": -0.8387638923311068, "y": 0.12896606584211037},
+          {"x": 0.11466833461479373, "y": -0.2762741373296247},
+          {"x": -0.6940083030159969, "y": -0.557514065301008},
+          {"x": 0.17114128534626175, "y": -0.19123999502425543},
+          {"x": 0.41768429648076194, "y": 0.5515112034403704},
+          {"x": 0.099337016404572, "y": -0.191380564048944},
+          {"x": 0.1926988310929724, "y": -0.12916653527047012},
+          {"x": 0.16738073338123763, "y": -0.0864728548109218},
+          {"x": -0.7384679808153775, "y": 0.4055610798373347},
+          {"x": 0.27380889179887624, "y": -0.10731148816056002},
+          {"x": 0.21885238089174586, "y": -0.08544633572249521},
+          {"x": 0.12526381787870428, "y": -0.11457572762862292},
+          {"x": 0.24334751683411368, "y": -0.022608343583572624},
+          {"x": 0.08840486288331575, "y": -0.09046942066123656},
+          {"x": 0.1661523071751365, "y": -0.058484362978348206},
+          {"x": 0.12526385211780233, "y": -0.11457572587842227},
+          {"x": 0.22923597369447662, "y": -0.12827285416676995},
+          {"x": -0.001306892768724915, "y": -0.10317966159809502}
+        ],
+        backgroundColor: 'rgb(255, 99, 132)'
+      }]
+    };
+
+    const config = {
+      type: 'scatter',
+      data: data,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Visualisation of features inside latent space'
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const featureDescriptions = [
+                  "This feature represents characteristics of a car.",
+                  "This feature represents characteristics of a guitar.",
+                  "This feature represents characteristics of a hat.",
+                  "This feature represents characteristics of a ice.",
+                  "This feature represents characteristics of a kite.",
+                  "This feature represents characteristics of a lamp.",
+                  "This feature represents characteristics of a queen.",
+                  "This feature represents characteristics of a shoe.",
+                  "This feature represents characteristics of a vase.",
+                  "This feature represents characteristics of a desk.",
+                  "This feature represents characteristics of a island.",
+                  "This feature represents characteristics of a jewelry.",
+                  "This feature represents characteristics of a key.",
+                  "This feature represents characteristics of a nest.",
+                  "This feature represents characteristics of a quilt.",
+                  "This feature represents characteristics of a ring.",
+                  "This feature represents characteristics of a violin.",
+                  "This feature represents characteristics of a clock.",
+                  "This feature represents characteristics of a envelope.",
+                  "This feature represents characteristics of a glove.",
+                  "This feature represents characteristics of a house.",
+                  "This feature represents characteristics of a ladder.",
+                  "This feature represents characteristics of a quiver.",
+                  "This feature represents characteristics of a towel.",
+                  "This feature represents characteristics of a vaccine.",
+                  "This feature represents characteristics of a yarn.",
+                  "This feature represents characteristics of a zoo.",
+                  "This feature represents characteristics of a bottle.",
+                  "This feature represents characteristics of a doll.",
+                  "This feature represents characteristics of a earring.",
+                  "This feature represents characteristics of a ink.",
+                  "This feature represents characteristics of a needle.",
+                  "This feature represents characteristics of a stool.",
+                  "This feature represents characteristics of a zipper."
+                ];
+                return featureDescriptions[context.dataIndex];
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: 'linear',
+            position: 'bottom',
+            title: {
+              display: true,
+              text: 'First coordinate of clustering plane'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Second coordinate of clustering plane'
+            }
+          }
+        }
+      }
+    };
+
+    new Chart(
+      document.getElementById('scatterPlot'),
+      config
+    );
+  </script>
+</body>
+</html>
